@@ -1,20 +1,31 @@
 package com.revature.Service;
 
 
+import com.revature.Model.Reservation;
 import com.revature.Model.Restaurant;
+import com.revature.Model.User;
+import com.revature.Repository.ReservationRepository;
 import com.revature.Repository.RestaurantRepository;
+import com.revature.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 
 public class RestaurantService {
+    @Autowired
     RestaurantRepository restaurantRepository;
-    UserService userService;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ReservationRepository reservationRepository;
+    @Autowired
+    User user;
 
     @Autowired
     public RestaurantService(RestaurantRepository restaurantRepository){
@@ -22,15 +33,22 @@ public class RestaurantService {
     }
 
     /**
+     * Sign up a new restaurant
+     */
+
+
+
+    /**
      * Create restaurant
      * @param restaurant
      * @return
      */
-   public Restaurant createRestaurant(String username, String password, Restaurant restaurant){
-     boolean userAuthenticated = userService.userAuthenticate(username, password);
-     if(!userAuthenticated){
+   public Restaurant createRestaurant(User user, Restaurant restaurant){
+     if(!isValidUser(user)){
+         System.out.println("User is not Valid");
          return null;
      }
+//     restaurant.setRestaurantId(user.getId());
      Restaurant newRestaurant = restaurantRepository.save(restaurant);
      return newRestaurant;
 
@@ -42,7 +60,10 @@ public class RestaurantService {
      * @return
      */
    public List<Restaurant> getAllRestaurant(){
-        return restaurantRepository.findAll();
+       List<Restaurant> restaurants = restaurantRepository.findAll();
+       return  restaurants;
+
+//        return restaurantRepository.findAll();
    }
 
     /**
@@ -50,7 +71,7 @@ public class RestaurantService {
      */
 
     public List<Restaurant> getRestaurantByName(String name){
-        return restaurantRepository.findRestaurantByName(name);
+        return restaurantRepository.findRestaurantByRestaurantName(name);
     }
 
     /**
@@ -58,7 +79,10 @@ public class RestaurantService {
      */
 
     public Restaurant deleteRestaurantById(Long restaurantId){
-        return restaurantRepository.deleteRestaurantById(restaurantId);
+        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
+        Restaurant restaurant = restaurantOptional.get();
+        restaurantRepository.delete(restaurant);
+        return restaurant;
     }
 
     /**
@@ -75,9 +99,13 @@ public class RestaurantService {
     }
 
 
-    public List<Restaurant> getRestaurantByAddress(String address) {
-        return restaurantRepository.findRestaurantByAddress(address);
+    public Restaurant getRestaurantByAddress(String restaurantAddress) {
+        return restaurantRepository.findRestaurantByRestaurantAddress(restaurantAddress);
     }
 
+
+    private boolean isValidUser(User user){
+        return user != null;
+    }
 
 }

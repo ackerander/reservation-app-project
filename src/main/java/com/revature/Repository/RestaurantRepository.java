@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface RestaurantRepository  extends JpaRepository<Restaurant, Long> {
 
-    List<Restaurant> findRestaurantByName(String restaurantName);
+    List<Restaurant> findRestaurantByRestaurantName(String restaurantName);
 
-    List<Restaurant> findRestaurantByAddress(String restaurantAddress);
+    Restaurant findRestaurantByRestaurantAddress(String restaurantAddress);
 
-    Restaurant deleteRestaurantById(Long restaurantID);
+    Restaurant deleteRestaurantByRestaurantId(Long restaurantID);
 
 }

@@ -3,8 +3,13 @@ package com.revature.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@MappedSuperclass
+//@MappedSuperclass
 @Data
+@Entity
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

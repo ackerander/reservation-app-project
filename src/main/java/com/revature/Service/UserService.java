@@ -19,7 +19,7 @@ public class UserService {
      */
    public User create(User user){
        //check if the username already exists
-       if(userRepository.findUserByUserName(user.getUsername()) != null){
+       if(userRepository.findUserByusername(user.getUsername()) != null){
            return null;
        }
        return userRepository.save(user);
@@ -32,7 +32,7 @@ public class UserService {
      * @return
      */
    public User login(String username, String password){
-       User user = userRepository.findUserByUserNameAndPassword(username, password);
+       User user = userRepository.findUserByusernameAndpasswd(username, password);
        if (user == null){
            return null;
        }
@@ -40,7 +40,7 @@ public class UserService {
    }
 
     public boolean userAuthenticate(String username, String password){
-        User user = userRepository.findUserByUserName(username);
+        User user = userRepository.findUserByusername(username);
         if(user != null && user.getPasswd().equals(password)){
             return true;
         }
@@ -48,4 +48,6 @@ public class UserService {
             return false;
         }
     }
+
+
 }
