@@ -5,11 +5,10 @@ import com.revature.Service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
@@ -21,19 +20,10 @@ public class ReservationController {
 		this.reservationService = reservationService;
 	}
 
-	@PostMapping(value = "reserve", params = {"customer", "venue"})
-	public Reservation newReservation(@RequestParam("venue") long venue_id,
-		@RequestParam("customer") long customer_id, @RequestBody Reservation reservation) {
-		return reservationService.registerReservation(venue_id, customer_id, reservation);
-	}
-
-	@GetMapping(value = "reservations", params = {"customer"})
-	public List<Reservation> getCustomerReservations(@RequestParam("customer") long customer_id) {
-		return getCustomerReservations(customer_id);
-	}
-
-	@GetMapping(value = "reservations", params = {"restaurant"})
-	public List<Reservation> getRestaurantReservations(@RequestParam("restaurant") long restaurant_id) {
-		return getRestaurantReservations(restaurant_id);
+	@PostMapping(value = "reserve", params = {"customer", "restaurant"})
+	public Reservation newReservation(@RequestParam("restaurant") long restaurant_id,
+		@RequestParam("customer") long customer_id, @RequestBody Reservation reservation,
+		@RequestHeader("sessionToken") long sessionToken) {
+		return reservationService.registerReservation(restaurant_id, customer_id, sessionToken, reservation);
 	}
 }

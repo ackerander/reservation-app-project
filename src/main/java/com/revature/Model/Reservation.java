@@ -27,11 +27,11 @@ public class Reservation {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonBackReference(value = "restaurant-reservations")
-	@JoinColumn(name = "restaurant_id")
+	@JoinColumn(name = "restaurant_id", nullable = true)
 	private Restaurant restaurant;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonBackReference(value = "customer-reservations")
-	@JoinColumn(name = "customer_id")
+	@JoinColumn(name = "customer_id", nullable = true)
 	private Customer customer;
 }
