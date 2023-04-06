@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue(value = "CUSTOMER")
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor

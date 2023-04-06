@@ -50,9 +50,9 @@ public class RestaurantController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping("restaurant/{id}/reservations")
-    public List<Reservation> getReservations(@PathVariable long id){
-        return restaurantService.getReservations(id);
+    @GetMapping(value = "reservations", params = {"restaurant"})
+    public List<Reservation> getRestaurantReservations(@RequestParam("restaurant") long restaurant_id) {
+            return restaurantService.getReservations(restaurant_id);
     }
 
     /**
@@ -91,10 +91,5 @@ public class RestaurantController {
     @GetMapping("restaurant/{id}")
     public Optional<Restaurant> getRestaurantById(@PathVariable long id){
         return restaurantService.getRestaurantById(id);
-    }
-
-    @PostMapping("restaurant/login")
-    public Restaurant restaurantLogin(@RequestBody Restaurant restaurant){
-        return restaurantService.restaurantLogin(restaurant.getUsername(), restaurant.getPasswd());
     }
 }

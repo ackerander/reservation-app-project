@@ -1,11 +1,15 @@
 package com.revature.Model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
 @Data
-public abstract class User {
+@AllArgsConstructor
+@NoArgsConstructor
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
@@ -13,4 +17,6 @@ public abstract class User {
 	protected String username;
 	@Column
 	protected String passwd;
+	@Column
+	protected long sessionToken = -1;
 }

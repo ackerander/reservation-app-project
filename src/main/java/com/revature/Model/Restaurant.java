@@ -3,16 +3,15 @@ package com.revature.Model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Entity
+@DiscriminatorValue(value = "RESTAURANT")
 @Data
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Restaurant extends User {
     @Column
     private String name;

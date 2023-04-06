@@ -13,27 +13,26 @@ public class ReservationService {
 	ReservationRepository reservationRepository;
 	RestaurantRepository restaurantRepository;
 	CustomerRepository customerRepository;
+	UserService userService;
 
 	@Autowired
-	public ReservationService(ReservationRepository reservationRepository, RestaurantRepository restaurantRepository, CustomerRepository customerRepository) {
+	public ReservationService(ReservationRepository reservationRepository, RestaurantRepository restaurantRepository, CustomerRepository customerRepository, UserService userService) {
 		this.reservationRepository = reservationRepository;
 		this.restaurantRepository = restaurantRepository;
 		this.customerRepository = customerRepository;
+		this.userService = userService;
 	}
 
-	public Reservation registerReservation(long restaurant_id, long customer_id, Reservation reservation) {
+	public Reservation registerReservation(long restaurant_id, long customer_id, long sessionToken, Reservation reservation) {
+		Customer c = userService.validate(Customer.class, customer_id, sessionToken);
+		if (c == null)
+			return null;
 		Restaurant r = restaurantRepository.findById(restaurant_id).get();
-		Customer c = customerRepository.findById(customer_id).get();
-		r.getReservations().add(reservation);
-		c.getReservations().add(reservation);
-		return reservationRepository.save(reservation);
-	}
+		reservation.setRestaurant(r);
+		reservation.setCustomer(c);
 
-	public List<Reservation> getCustomerReservations(long customer_id) {
-		return reservationRepository.findAllByCustomer(customer_id);
-	}
-
-	public List<Reservation> getRestaurantReservations(long restaurant_id) {
-		return reservationRepository.findAllByRestaurant(restaurant_id);
+		Reservation newRes = reservationRepository.save(reservation);
+		reservationRepository.insertReservation(customer_id, restaurant_id, newRes.getId());
+		return newRes;
 	}
 }

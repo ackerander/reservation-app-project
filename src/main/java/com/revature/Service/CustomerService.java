@@ -12,23 +12,20 @@ import java.util.List;
 @Transactional
 public class CustomerService {
 	CustomerRepository customerRepository;
-	ReservationRepository reservationRepository;
+	UserService userService;
 
 	@Autowired
-	public CustomerService(CustomerRepository customerRepository, ReservationRepository reservationRepository) {
+	public CustomerService(CustomerRepository customerRepository, UserService userService) {
 		this.customerRepository = customerRepository;
-		this.reservationRepository = reservationRepository;
+		this.userService = userService;
 	}
 
 	public Customer newCustomer(Customer customer) {
 		return customerRepository.save(customer);
 	}
 
-	public Customer login(Customer customer) {
-		return customerRepository.findByUsernameAndPasswd(customer.getUsername(), customer.getPasswd());
-	}
-
-	public List<Reservation> getReservations(long id) {
-		return customerRepository.findById(id).get().getReservations();
+	public List<Reservation> getReservations(long id, long sessionToken) {
+		Customer c = userService.validate(Customer.class , id, sessionToken);
+		return c.getReservations();
 	}
 }
