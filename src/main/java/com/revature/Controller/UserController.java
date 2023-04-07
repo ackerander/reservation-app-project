@@ -4,6 +4,7 @@ import com.revature.Model.*;
 import com.revature.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class UserController {
 		return userService.login(user);
 	}
 
-	@PostMapping("logout/{id}")
+	@DeleteMapping("logout/{id}")
 	public User logout(@PathVariable("id") long id, @RequestHeader("sessionToken") long sessionToken) {
 		return userService.logout(id, sessionToken);
 	}

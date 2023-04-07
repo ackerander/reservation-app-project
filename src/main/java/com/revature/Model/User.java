@@ -1,5 +1,7 @@
 package com.revature.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,5 +20,6 @@ public class User {
 	@Column
 	protected String passwd;
 	@Column
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	protected long sessionToken = -1;
 }
